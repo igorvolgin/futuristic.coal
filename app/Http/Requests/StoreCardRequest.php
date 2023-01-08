@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreCardRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreCardRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -24,9 +25,9 @@ class StoreCardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'string, required',
+            'title' => 'required|string',
             'description' => 'string',
-            'column_id' => 'required|exists:columns'
+            'column_id' => 'required|exists:columns,id'
         ];
     }
 }

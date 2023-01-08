@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateColumnRequest extends FormRequest
+class IndexCardRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return Auth::check();
     }
@@ -25,7 +25,9 @@ class UpdateColumnRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'access_token' => 'required',
+            'date' => 'sometimes|date_format:Y-m-d',
+            'status' => 'integer|in:1,0'
         ];
     }
 }
