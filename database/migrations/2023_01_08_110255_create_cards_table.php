@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->integer('order')->nullable();
             $table->foreignId('column_id')->constrained();
             $table->timestamps();
             $table->softDeletes();
