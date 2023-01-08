@@ -1,0 +1,58 @@
+version: '3.5'
+
+services:
+
+    api:
+        build:
+            context: .
+            args:
+                ARCHITECTURE: ${MACHINE_ARCHITECTURE}
+        container_name: taskboard-local-api
+        volumes:
+            - ./:/app
+        ports:
+            - "2715:80"
+
+    node:
+        build:
+            dockerfile: node.Dockerfile
+            context: .
+        container_name: taskboard-local-node
+        tty: true
+        stdin_open: true
+        volumes:
+            - .:/app
+        ports:
+            - "2716:2716"
+
+    pgsql:
+        image: postgres:12.4
+        container_name: taskboard-local-pgsql
+        volumes:
+            - taskboard-local-db:/var/lib/postgresql/data
+        environment:
+            TZ: "Europe/Kiev"
+            PGTZ: "Europe/Kiev"
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "5415:5432"
+
+    redis:
+        container_name: taskboard-local-redis
+        image: redis:5.0
+        volumes:
+            - taskboard-local-redis:/data
+
+
+networks:
+    default:
+        name: taskboard-local
+        driver: bridge
+
+volumes:
+    taskboard-local-db:
+        driver: local
+    taskboard-local-redis:
+        driver: local

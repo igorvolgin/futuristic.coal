@@ -1,0 +1,73 @@
+version: '3.5'
+
+services:
+
+    api:
+        build:
+            dockerfile: demo.Dockerfile
+            context: .
+            args:
+                ARCHITECTURE: ${MACHINE_ARCHITECTURE}
+        container_name: taskboard-demo-api
+        volumes:
+          - taskboard-demo-public:/app/public
+          - .env:/app/.env
+        environment:
+          - VIRTUAL_HOST=${VIRTUAL_HOST}
+          - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+        restart: unless-stopped
+
+    node:
+        build:
+            dockerfile: node.Dockerfile
+            context: .
+        container_name: taskboard-demo-node
+        tty: true
+        stdin_open: true
+        volumes:
+          - taskboard-demo-public:/app/public
+          - ./package.json:/app/package.json
+          - ./vite.config.js:/app/vite.config.js
+          - ./postcss.config.js:/app/postcss.config.js
+          - ./resources:/app/resources
+          - .env:/app/.env
+        restart: unless-stopped
+
+    pgsql:
+        image: postgres:12.4
+        container_name: taskboard-demo-pgsql
+        volumes:
+            - taskboard-demo-db:/var/lib/postgresql/data
+        environment:
+            TZ: "Europe/Kiev"
+            PGTZ: "Europe/Kiev"
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "5400:5432"
+        restart: unless-stopped
+
+    redis:
+        container_name: taskboard-demo-redis
+        image: redis:5.0
+        volumes:
+            - taskboard-demo-redis:/data
+        restart: unless-stopped
+
+
+networks:
+    default:
+        name: taskboard
+        driver: bridge
+        external: true
+
+volumes:
+    taskboard-demo:
+        driver: local
+    taskboard-demo-public:
+      driver: local
+    taskboard-demo-db:
+        driver: local
+    taskboard-demo-redis:
+        driver: local
