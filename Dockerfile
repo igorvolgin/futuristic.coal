@@ -15,6 +15,11 @@ ENV PHP_UPLOAD_MAX_FILESIZE=50M
 ENV PHP_POST_MAX_SIZE=50M
 ENV PHP_MEMORY_LIMIT=-1
 
+RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee  /etc/apt/sources.list.d/pgdg.list
+RUN apt update
+RUN apt -y install postgresql-client-12
+
 ENV WEB_DOCUMENT_ROOT=/app/public
 ENV PHP_DISMOD=bz2,calendar,exiif,ffi,intl,gettext,mysqli,imap,sockets,sysvmsg,sysvsm,sysvshm,shmop,xsl,apcu,vips,yaml,mongodb,amqp
 WORKDIR /app
