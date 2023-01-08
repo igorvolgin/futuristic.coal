@@ -10,7 +10,7 @@ class Card extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'column_id'];
+    protected $fillable = ['title', 'description', 'order', 'column_id'];
 
     protected $hidden = ['updated_at'];
 
