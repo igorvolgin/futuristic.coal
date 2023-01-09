@@ -10,8 +10,7 @@ services:
                 ARCHITECTURE: ${MACHINE_ARCHITECTURE}
         container_name: taskboard-demo-api
         volumes:
-          - taskboard-demo-public:/app/public
-          - .env:/app/.env
+          - .:/app
         environment:
           - VIRTUAL_HOST=${VIRTUAL_HOST}
           - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
@@ -25,11 +24,7 @@ services:
         tty: true
         stdin_open: true
         volumes:
-          - taskboard-demo-public:/app/public
-          - ./package.json:/app/package.json
-          - ./vite.config.js:/app/vite.config.js
-          - ./resources:/app/resources
-          - .env:/app/.env
+          - .:/app
         restart: unless-stopped
 
     pgsql:
