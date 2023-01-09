@@ -23,10 +23,10 @@ COPY docker/php-nginx /opt/docker
 
 ENV COMPOSER_MEMORY_LIMIT=-1
 
-RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee  /etc/apt/sources.list.d/pgdg.list
-RUN apt update
-RUN apt -y install postgresql-client-12
+#RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+#RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee  /etc/apt/sources.list.d/pgdg.list
+#RUN apt update
+#RUN apt -y install postgresql-client-12
 
 RUN composer install --no-interaction --optimize-autoloader
 RUN php artisan optimize
