@@ -28,9 +28,9 @@ ENV COMPOSER_MEMORY_LIMIT=-1
 #RUN apt update
 #RUN apt -y install postgresql-client-12
 
-RUN composer install --no-interaction --optimize-autoloader
-RUN php artisan optimize
-RUN php artisan horizon:publish
+#RUN composer install --no-interaction --optimize-autoloader
+#RUN php artisan optimize
+#RUN php artisan horizon:publish
 RUN chown -R application:application .
 
 
