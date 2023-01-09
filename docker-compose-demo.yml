@@ -28,7 +28,6 @@ services:
           - taskboard-demo-public:/app/public
           - ./package.json:/app/package.json
           - ./vite.config.js:/app/vite.config.js
-          - ./postcss.config.js:/app/postcss.config.js
           - ./resources:/app/resources
           - .env:/app/.env
         restart: unless-stopped
